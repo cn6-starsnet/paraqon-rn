@@ -1,45 +1,28 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import Initialize from '@/components/initialize';
+import NavigationConfig from '@/components/NavigationConfig';
+import store from '@/store';
+import { StatusBar, Text, useColorScheme } from 'react-native';
 import {
   SafeAreaProvider,
-  useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-
+import { Provider } from 'react-redux';
+ 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
+  const handleNavigationStateChange = (state: any) => {
+    console.log("导航状态变化", state)
+  }
+
   return (
-    <SafeAreaProvider>
+    <Provider store={store}>
+      <Initialize />
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+      <SafeAreaProvider>
+        <NavigationConfig onStateChange={handleNavigationStateChange}/>
+      </SafeAreaProvider>
+    </Provider>
   );
 }
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
