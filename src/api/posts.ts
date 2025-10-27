@@ -1,6 +1,6 @@
 import { get } from '@/utils/http'
 
-const prefix = "contents";
+const prefix = "posts";
 
 const postsAPI = {
     filterPostsByCategories: ({next_page_url, category_ids, logic_gate, per_page, page, slug, keyword}: {
@@ -13,26 +13,20 @@ const postsAPI = {
     keyword?: string | null;
   }) => {
         if(next_page_url) {
-            return get({
-                url: next_page_url
-            }, false)
+            return get(next_page_url)
         }
-        return get({
-            url: `/${prefix}/filter`,
-            params: {
-                category_ids,
-                logic_gate,
-                per_page,
-                page,
-                slug,
-                keyword
-            }
-        }, false)
+        return get(`/${prefix}/filter`,
+        {
+            category_ids,
+            logic_gate,
+            per_page,
+            page,
+            slug,
+            keyword
+        })
     },
     getPostDetails: ({ _id }) => {
-      return get({
-            url: `/${prefix}/${_id}/details`,
-        })
+      return get(`/${prefix}/${_id}/details`)
     },
 }
 

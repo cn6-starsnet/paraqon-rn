@@ -18,13 +18,12 @@ const initialState: StaticsState = {
   error: null,
 };
 
-// Async Thunks
 export const getContentBySlug = createAsyncThunk(
   'statics/getContentBySlug',
   async (slug: string, { rejectWithValue }) => {
     try {
       const response = await staticsAPI.getContentBySlug({ slug });
-      return response.data;
+      return response?.content;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || '获取内容失败');
     }

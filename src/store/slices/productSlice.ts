@@ -41,12 +41,9 @@ export const fetchAuctionsType = createAsyncThunk(
   'auctions/fetchAuctionsType',
   async (_, { rejectWithValue }) => {
     try {
-      console.log("调用fetchAuctionsType")
       const response = await auctionAPI.getAuctionsType();
-      console.log("获取的数据为,", response.data)
       return response.data;
     } catch (error: any) {
-      console.log("调用fetchAuctionsType出错", error)
       return rejectWithValue(error.response?.data?.message || '获取拍卖类型失败');
     }
   }
@@ -57,7 +54,7 @@ export const fetchAuctionsDetail = createAsyncThunk(
   async (storeId: string, { rejectWithValue }) => {
     try {
       const response = await auctionAPI.getAuctionDetails({ auction_id: storeId });
-      return response.data;
+      return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || '获取拍卖详情失败');
     }
@@ -66,13 +63,19 @@ export const fetchAuctionsDetail = createAsyncThunk(
 
 export const fetchAuctionsGoods = createAsyncThunk(
   'auctions/fetchAuctionsGoods',
-  async (params: { storeId: string; per_page?: number; page?: number }, { rejectWithValue }) => {
+  async (params: { storeId: string; per_page?: number; page?: number; sort_by?: string; sort_order: string }, { rejectWithValue }) => {
     try {
+      const { 
+        storeId, 
+        per_page = 999, 
+        page = 1,
+      } = params;
       const response = await auctionAPI.getAuctionsGoods({
-        auction_id: params.storeId,
-        per_page: params.per_page,
-        page: params.page
+        auction_id: storeId,
+        per_page: per_page,
+        page: page
       });
+      
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || '获取拍品数据失败');
@@ -89,6 +92,7 @@ export const getAllAuctionLotsAndNumber = createAsyncThunk(
         sort_by: params.sort_by,
         sort_order: params.sort_order
       });
+      console.log("getAllAuctionLotsAndNumber", response)
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || '获取拍品列表失败');
@@ -140,18 +144,9 @@ const auctionsSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // fetchAuctionsDetail
-      .addCase(fetchAuctionsDetail.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(fetchAuctionsDetail.fulfilled, (state, action) => {
         state.loading = false;
         state.auctionsDetails = action.payload;
-      })
-      .addCase(fetchAuctionsDetail.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
       })
       // fetchAuctionsGoods
       .addCase(fetchAuctionsGoods.pending, (state) => {
@@ -172,6 +167,7 @@ const auctionsSlice = createSlice({
         state.error = null;
       })
       .addCase(getAllAuctionLotsAndNumber.fulfilled, (state, action) => {
+        console.log("正在设置action.payload",action.payload)
         state.loading = false;
         state.log_list = action.payload;
       })

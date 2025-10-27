@@ -12,9 +12,9 @@ module.exports = {
           '@utils': './src/utils',
           '@hooks': './src/hooks',
           '@pages': './src/pages',
-          '@constants/*': './src/constants'
+          '@constants': './src/constants'
         },
       },
-    ],
+    ]
   ],
 };

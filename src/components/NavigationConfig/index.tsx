@@ -4,6 +4,13 @@ import Welcome from "@/pages/Welcome";
 import { NavigationContainer, NavigationState } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { FC } from "react";
+import EditorialDetail from '@/pages/EditorialDetail';
+import PrivateSales from '@/pages/PrivateSales';
+import ExpertServices from '@/pages/ExpertServices';
+import Information from '@/pages/Tabs/Information';
+import WrokChance from '@/pages/WrokChance';
+import Auctions from '@/pages/Auctions';
+import AuctionDetail from '@/pages/AuctionDetail';
 
 export const defaultRouteName: keyof RootStackParamList = "Welcome";
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -18,6 +25,34 @@ const StackList: StackScreenProps[] = [
     {
         name: "Welcome",
         component: Welcome
+    },
+    {
+        name: "EditorialDetail",
+        component: EditorialDetail
+    },
+    {
+        name: "PrivateSales",
+        component: PrivateSales
+    },
+    {
+        name: "ExpertServices",
+        component: ExpertServices
+    },
+    {
+        name: "Information",
+        component: Information
+    },
+    {
+        name: "WrokChance",
+        component: WrokChance
+    },
+    {
+        name: "Auctions",
+        component: Auctions
+    },
+    {
+        name: "AuctionDetail",
+        component: AuctionDetail
     },
     {
         name: "Tabs",

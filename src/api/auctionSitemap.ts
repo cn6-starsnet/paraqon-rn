@@ -4,9 +4,7 @@ const prefix = "auction/sitemap/auctions";
 
 const auctionSitemapAPI = {
     getAllAuctions: () => {
-        return get({
-            url: `/${prefix}/all`
-        })
+        return get(`/${prefix}/all`)
     }
 }
 

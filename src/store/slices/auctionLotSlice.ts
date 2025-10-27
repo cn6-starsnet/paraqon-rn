@@ -16,7 +16,9 @@ interface AuctionLot {
 }
 
 interface PaginatedData {
-  data: any[];
+  data: {
+    customer_id: string
+  }[];
   [key: string]: any;
 }
 
@@ -25,7 +27,9 @@ interface AuctionLotState {
   owned_auction_lots: PaginatedData | null;
   auction_lot: AuctionLot | null;
   auction_lot_my_bids: PaginatedData | null;
-  auction_lot_all_bids: PaginatedData | null;
+  auction_lot_all_bids: {
+    customer_id: string
+  }[] | null;
 }
 
 const initialState: AuctionLotState = {
@@ -36,12 +40,12 @@ const initialState: AuctionLotState = {
   auction_lot_all_bids: null,
 };
 
-// Async Thunks
 export const getAuctionLotDetails = createAsyncThunk(
   'auctionLot/getAuctionLotDetails',
   async (auction_lot_id: string) => {
     const response = await auctionLotAPI.getAuctionLogDetails({ auction_lot_id });
-    return response.data;
+    console.log("获取的getAuctionLotDetails数据为", response)
+    return response;
   }
 );
 
@@ -127,7 +131,7 @@ const auctionLotSlice = createSlice({
         state.auction_lot_all_bids = action.payload;
       })
       .addCase(getAuctionLotAllBids.rejected, (state) => {
-        state.auction_lot_all_bids = { data: [] };
+        state.auction_lot_all_bids = [];
       });
   }
 });

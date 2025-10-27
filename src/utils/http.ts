@@ -35,7 +35,6 @@ class HttpClient {
       headers: {
         "accept": "application/json, text/plain, */*",
         "accept-language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-        "authorization":  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNzUxMzY2NDU3N2NkZDUzMzNmOGU3MGUzYzI5MTYwMjFiZjZhODNlM2MyM2U4NWZlM2ZmMDgxMDgzYjU0ZGNiYzBjNWEyMjc4NTI3ZmNkZTgiLCJpYXQiOjE3NjA2Nzk4NDcuNTU2NDI0LCJuYmYiOjE3NjA2Nzk4NDcuNTU2NDM2LCJleHAiOjE3OTIyMTU4NDcuNTQ4MjIsInN1YiI6IjczNzgzIiwic2NvcGVzIjpbXX0.iRAlOnCEnf8XoPKTxJDczQZfKPt9QMTZKKu09c9tXP2_Gs8Brt-6f-WbJfViyV3JD0H59ZCTKSuFT2TSC4dtSdW8xzFLXBHTp7yVHpZiAL_4UEcKE-4ECjh0_0GY-9aR_kdxh87iWxnxd7LfmvO48p9-QlE9i56e7_En60hMC_v87AOE8unmayAEA0I_ZunPa1e2du4Cq5a2yt7Z82iaJXgnRzhlD7gWS3ikCWnEnmWrEru2YZneHqO6rHG9GCnpLbdnVa0OCs1yRpabmRposOikayVRZ38-xyJzCsR9EX_iSHCIOQ4IV0asqLDTDv6WcuUC9cR3t7PAfQ4JhNVVVBCVuB4hgpaUSU9GjBZDzU6n8kOmAxFzILbq2do-D-KFR1p5ZwEgm1G4aDDh2fcHEoYATmRWHSE9lHdTTwKvEc8p37bOWoKXLeOd5N3HGWRwJVOMbARuYLfB5GCPyDgsqVbbWe9L3q3bET0811v0retnOI64TVrgI2DjvwQlEenseos8aQzeSUDHw4D6vRUsOs__21OkVVZaQ-7MxvAHZmG-6bVpwhpBBYIh73A_9Nteo5Sqm8lBGqZ2KPltlwgwXwmxB-899Q9BOk1pEL2V7S743TRRxDzvATfOlfwjHZVWKGROAKm8lUEo0tne0ZQ9w_LyaUcyIq2ZRS0zLkxlZYo",
         'Content-Type': 'application/json',
       },
     });
@@ -66,8 +65,7 @@ class HttpClient {
           const token = getStoreItem(ACCESS_TOKEN);
           const testToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNzUxMzY2NDU3N2NkZDUzMzNmOGU3MGUzYzI5MTYwMjFiZjZhODNlM2MyM2U4NWZlM2ZmMDgxMDgzYjU0ZGNiYzBjNWEyMjc4NTI3ZmNkZTgiLCJpYXQiOjE3NjA2Nzk4NDcuNTU2NDI0LCJuYmYiOjE3NjA2Nzk4NDcuNTU2NDM2LCJleHAiOjE3OTIyMTU4NDcuNTQ4MjIsInN1YiI6IjczNzgzIiwic2NvcGVzIjpbXX0.iRAlOnCEnf8XoPKTxJDczQZfKPt9QMTZKKu09c9tXP2_Gs8Brt-6f-WbJfViyV3JD0H59ZCTKSuFT2TSC4dtSdW8xzFLXBHTp7yVHpZiAL_4UEcKE-4ECjh0_0GY-9aR_kdxh87iWxnxd7LfmvO48p9-QlE9i56e7_En60hMC_v87AOE8unmayAEA0I_ZunPa1e2du4Cq5a2yt7Z82iaJXgnRzhlD7gWS3ikCWnEnmWrEru2YZneHqO6rHG9GCnpLbdnVa0OCs1yRpabmRposOikayVRZ38-xyJzCsR9EX_iSHCIOQ4IV0asqLDTDv6WcuUC9cR3t7PAfQ4JhNVVVBCVuB4hgpaUSU9GjBZDzU6n8kOmAxFzILbq2do-D-KFR1p5ZwEgm1G4aDDh2fcHEoYATmRWHSE9lHdTTwKvEc8p37bOWoKXLeOd5N3HGWRwJVOMbARuYLfB5GCPyDgsqVbbWe9L3q3bET0811v0retnOI64TVrgI2DjvwQlEenseos8aQzeSUDHw4D6vRUsOs__21OkVVZaQ-7MxvAHZmG-6bVpwhpBBYIh73A_9Nteo5Sqm8lBGqZ2KPltlwgwXwmxB-899Q9BOk1pEL2V7S743TRRxDzvATfOlfwjHZVWKGROAKm8lUEo0tne0ZQ9w_LyaUcyIq2ZRS0zLkxlZYo'
           if (testToken && config.headers) {
-            console.log("成功设置token", testToken);
-            // config.headers.Authorization = `Bearer ${testToken}`;
+            config.headers.Authorization = `Bearer ${testToken}`;
           }
         }
 
@@ -149,9 +147,7 @@ class HttpClient {
         message = error.message || '网络连接失败';
     }
 
-    // 显示错误提示
     console.error('❌ 错误信息:', message);
-    // 例如：Toast.error(message);
   }
 
   // 通用请求方法

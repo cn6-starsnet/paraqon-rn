@@ -6,6 +6,7 @@ import auctionSlice from '@/store/slices/auctionSlice'
 import auctionLotSlice from '@/store/slices/auctionLotSlice'
 import postSlice from '@/store/slices/postSlice'
 import productSlice from '@/store/slices/productSlice'
+import staticsSlice from '@/store/slices/staticSlice'
 
 const store = configureStore({
     reducer: {
@@ -15,7 +16,8 @@ const store = configureStore({
         auctions: auctionSlice,
         auctionLot: auctionLotSlice,
         posts: postSlice,
-        products: productSlice
+        products: productSlice,
+        statics: staticsSlice
     }
 })
 

@@ -50,9 +50,10 @@ export const getPostDetails = createAsyncThunk(
   async (_id: string, { rejectWithValue }) => {
     try {
       const response = await postsAPI.getPostDetails({ _id });
-      return response.data;
+      console.log("从接口获取到的数据为", response)
+      return response;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || '获取文章详情失败');
+      return rejectWithValue(error.response?.message || '获取文章详情失败');
     }
   }
 );
@@ -70,8 +71,10 @@ export const filterPostsByCategories = createAsyncThunk(
   }, { rejectWithValue }) => {
     try {
       const response = await postsAPI.filterPostsByCategories(params);
+      console.log("|response.data",response.data)
       return response.data;
     } catch (error: any) {
+      console.log("获取的论设数据出错",error)
       return rejectWithValue(error.response?.data?.message || '筛选文章失败');
     }
   }
@@ -163,6 +166,7 @@ const postsSlice = createSlice({
       })
       .addCase(getPostDetails.fulfilled, (state, action) => {
         state.loading = false;
+        console.log("getPostDetails fulfilled", action.payload)
         state.post = action.payload;
       })
       .addCase(getPostDetails.rejected, (state, action) => {
@@ -175,6 +179,7 @@ const postsSlice = createSlice({
       })
       .addCase(filterPostsByCategories.fulfilled, (state, action) => {
         state.loading = false;
+        console.log("crateAsyncChunk", action.payload)
         if (action.payload.current_page === 1) {
           state.posts = [action.payload];
         } else {

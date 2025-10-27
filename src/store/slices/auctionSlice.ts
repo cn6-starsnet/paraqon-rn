@@ -6,6 +6,18 @@ interface Auction {
   _id: string;
   is_registered: boolean;
   auction_registration_request?: any;
+  auction_type?: 'ONLINE' | 'LIVE';
+  status?: string;
+  contact_info?: {
+    name?: {
+      cn?: string;
+    };
+    position?: {
+      cn?: string;
+    };
+    phone?: string;
+    email?: string;
+  };
   [key: string]: any;
 }
 
@@ -51,7 +63,8 @@ export const getAuctionDetails = createAsyncThunk(
   'auction/getAuctionDetails',
   async (auction_id: string) => {
     const response = await auctionAPI.getAuctionDetails({ auction_id });
-    return response.data;
+    console.log("getAuctionDetails",response)
+    return response;
   }
 );
 

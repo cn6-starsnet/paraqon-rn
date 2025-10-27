@@ -25,8 +25,12 @@ export const selectCategories = createSelector(
 export const selectPosts = createSelector(
   [selectPostsData],
   (postsData) => {
-    const output = postsData.map((post) => post.data);
-    return [].concat.apply([], output);
+    console.log("postsDatapostsDatapostsData",postsData)
+    if (!postsData[0] || postsData[0].length === 0) {
+      return []
+    }
+
+    return postsData.flatMap(post => post || [])
   }
 );
 
