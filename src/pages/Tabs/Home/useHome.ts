@@ -2,27 +2,25 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchAuctionsType } from "@/store/slices/productSlice";
 import { StackActions, useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-// import { useSharedValue } from "react-native-reanimated";
-// import { ICarouselInstance } from "react-native-reanimated-carousel";
+import { useSharedValue } from "react-native-reanimated";
+import { ICarouselInstance } from "react-native-reanimated-carousel";
 
 const useHome = () => {
-    const [currentFeaturedTab, setCurrentFeaturedTab] = useState("upcoming")
     const dispatch = useAppDispatch()
     const navigation = useNavigation();
     const auctionsTypes = useAppSelector((state) => state.products.auctionsType)
-    // const carouselRef = React.useRef<ICarouselInstance>(null);
-    // const progress = useSharedValue<number>(0);
+    const carouselRef = React.useRef<ICarouselInstance>(null);
+    const progress = useSharedValue<number>(0);
+
+    const [searchKeyword, setSearchKeyword] = useState("");
+    const [currentFeaturedTab, setCurrentFeaturedTab] = useState("upcoming")
     
-    // const onPressPagination = (index: number) => {
-    //     carouselRef.current?.scrollTo({
-    //     /**
-    //      * Calculate the difference between the current index and the target index
-    //      * to ensure that the carousel scrolls to the nearest index
-    //      */
-    //     count: index - progress.value,
-    //     animated: true,
-    //     });
-    // };
+    const onPressPagination = (index: number) => {
+        carouselRef.current?.scrollTo({
+            count: index - progress.value,
+            animated: true,
+        });
+    };
  
 
     const featuredTabs = useMemo(() => {
@@ -79,14 +77,16 @@ const useHome = () => {
     }, [auctionsTypes])
 
     return {
-        // progress,
-        // carouselRef,
+        progress,
+        carouselRef,
         featuredTabs,
+        searchKeyword,
         filterAuctions,
         currentFeaturedTab,
         getCoverImage,
+        setSearchKeyword,
         handleAuctionType,
-        // onPressPagination,
+        onPressPagination,
         setCurrentFeaturedTab
     }
 }

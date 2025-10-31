@@ -57,7 +57,7 @@ const BidDisplay: React.FC<BidDisplayProps> = ({
 
   // 计算状态
   const isSold = () => {
-    if (auction.auction_type === "ONLINE") return false;
+    if (auction?.auction_type === "ONLINE") return false;
     return (
       lot.status === "ACTIVE" &&
       lot.is_disabled &&
@@ -66,7 +66,7 @@ const BidDisplay: React.FC<BidDisplayProps> = ({
   };
 
   const isUnsold = () => {
-    if (auction.auction_type === "ONLINE") return false;
+    if (auction?.auction_type === "ONLINE") return false;
     return (
       lot.status === "ACTIVE" &&
       lot.is_disabled &&
@@ -75,9 +75,9 @@ const BidDisplay: React.FC<BidDisplayProps> = ({
   };
 
   const isLotOpen = () => {
-    if (auction.auction_type === "ONLINE") return false;
+    if (auction?.auction_type === "ONLINE") return false;
     if (
-      auction.status === "ACTIVE" &&
+      auction?.status === "ACTIVE" &&
       lot.status === "ACTIVE" &&
       !lot.is_disabled &&
       !lot.is_closed
@@ -87,9 +87,9 @@ const BidDisplay: React.FC<BidDisplayProps> = ({
   };
 
   const isUpcoming = () => {
-    if (auction.auction_type === "ONLINE") return false;
+    if (auction?.auction_type === "ONLINE") return false;
     return (
-      auction.status === "ACTIVE" &&
+      auction?.status === "ACTIVE" &&
       lot.status === "ARCHIVED" &&
       !lot.is_disabled &&
       !lot.is_closed
@@ -124,7 +124,7 @@ const BidDisplay: React.FC<BidDisplayProps> = ({
 
   return (
     <View style={styles.container}>
-      {auction.auction_type === 'ONLINE' ? (
+      {auction?.auction_type === 'ONLINE' ? (
         <>
           {isActive ? (
             <View style={styles.section}>

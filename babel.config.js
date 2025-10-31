@@ -15,6 +15,7 @@ module.exports = {
           '@constants': './src/constants'
         },
       },
-    ]
+    ],
+    'react-native-worklets/plugin',
   ],
 };

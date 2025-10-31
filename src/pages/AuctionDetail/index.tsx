@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -24,6 +24,11 @@ import { getAllAuctionLotsAndNumber } from '@/store/slices/productSlice';
 import RenderHTML from 'react-native-render-html';
 import { formatCurrency } from '@/utils/format';
 import { pxToVh, pxToVw } from '@/utils/pxToVx';
+import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
+import PrevIcon from '@svgs/common/arrow_left.svg'
+import NextIcon from '@svgs/common/arrow_right.svg'
+import { useSharedValue } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 // import { formatCurrency, formatRichText } from '@/utils/format';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -35,28 +40,22 @@ const AuctionDetail = ({ route, navigation }) => {
   const [acutionLotId, setAcutionLotId] = useState('');
   const [storeId, setStoreId] = useState('');
   const [lotNumber, setLotNumber] = useState(null);
+  const insets = useSafeAreaInsets();
 
-  // 从Redux获取状态
   const getAuction = useAppSelector(state => state.auctions.auction);
   const getAuctionLot = useAppSelector(state => state.auctionLot.auction_lot);
   const getAuctionLotBids = useAppSelector(state => state.auctionLot.auction_lot_all_bids);
   const getLotList = useAppSelector(state => state.products.log_list);
 
-  const getDisplayProductImages = () => {
+  const carouselRef = React.useRef<ICarouselInstance>(null);
+  const progress = useSharedValue<number>(0);
+
+  const getDisplayProductImages = useMemo(() => {
     return (getAuctionLot?.product?.images) || [];
-  };
+  }, []);
 
   const getProductInfo = () => {
     return getAuctionLot?.product || {};
-  };
-
-  const canPrev = () => {
-    return getDisplayProductImages().length > 0 && currentSwipIndex > 0;
-  };
-
-  const canNext = () => {
-    return getDisplayProductImages().length > 0 && 
-      currentSwipIndex < getDisplayProductImages().length - 1;
   };
 
   const isEnded = () => {
@@ -102,14 +101,6 @@ const init = useCallback(async (auctionLotId: string) => {
   }
 }, [dispatch]);
 
-  const handleSwiperChange = (index) => {
-    setCurrentSwipIndex(index);
-  };
-
-  const handleIndicatorClick = (index) => {
-    setCurrentSwipIndex(index);
-  };
-
   const changeLot = (product) => {
     if (acutionLotId !== product.auction_lot_id) {
       navigation.navigate('AuctionDetail', { id: product.auction_lot_id });
@@ -132,8 +123,14 @@ const init = useCallback(async (auctionLotId: string) => {
     const nextLot = getLotList[currentIndex + 1];
     if (nextLot) changeLot(nextLot);
   };
+  
+  const onPressPagination = (index: number) => {
+    carouselRef.current?.scrollTo({
+        count: index - progress.value,
+        animated: true,
+    });
+  };
 
-  // 生命周期
   useEffect(() => {
     const { id } = route.params;
     setAcutionLotId(id);
@@ -141,8 +138,7 @@ const init = useCallback(async (auctionLotId: string) => {
   }, [route.params, init]);
 
   return (
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        {/* 拍卖标题 */}
+      <View style={[styles.container,{paddingBottom: insets.bottom}]}>
         <View style={styles.auctionHeader}>
           <Text style={styles.headerText}>
             {getAuction?.title?.cn} -
@@ -154,7 +150,7 @@ const init = useCallback(async (auctionLotId: string) => {
           </Text>
         </View>
 
-        <View style={styles.mainContainer}>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.mainContainer}>
           <View style={styles.swiperContainerBox}>
             <View style={styles.topContent}>
               <TouchableOpacity
@@ -216,68 +212,51 @@ const init = useCallback(async (auctionLotId: string) => {
             </Modal>
 
             {/* 轮播图 */}
-            {/* {getDisplayProductImages().length > 0 ? (
-              <View style={styles.swipeContainer}>
-                <View style={styles.swipeList}>
-                  <Swiper
-                    loop={false}
-                    showsPagination={false}
-                    index={currentSwipIndex}
-                    onIndexChanged={handleSwiperChange}
-                    containerStyle={styles.swiperContainer}
-                  >
-                    {getDisplayProductImages().map((image, index) => (
-                      <View key={index} style={styles.swiperImgItem}>
-                        <Image
-                          style={styles.swiperImg}
-                          source={{ uri: image }}
-                          resizeMode="cover"
-                        />
+            {getDisplayProductImages.length > 0 ? <View style={styles.carouselContainer}>
+                                <Carousel
+                                    ref={carouselRef}
+                                    width={screenWidth - pxToVw(50)}
+                                    height={pxToVh(650)}
+                                    data={getDisplayProductImages}
+                                    mode="parallax"
+                                    modeConfig={{
+                                        parallaxScrollingScale: 0.9,
+                                        parallaxScrollingOffset: 50,
+                                    }}
+                                    onProgressChange={progress}
+                                    renderItem={({item}) => {
+                                     return   (
+                                        <Image resizeMode="stretch" height={pxToVh(600)} source={{ uri: item }}/>
+                                    )}}
+                                />
+                            
+                                <Pagination.Basic
+                                    progress={progress}
+                                    data={getDisplayProductImages}
+                                    dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50 }}
+                                    containerStyle={{ gap: 5, marginTop: 10 }}
+                                    onPress={onPressPagination}
+                                />
+            
+                                <View style={styles.nextPrevBtns}>
+                                    <TouchableOpacity style={[styles.arrowBtn]} activeOpacity={0.7} onPress={() => {onPressPagination(progress.value - 1)}}>
+                                        <PrevIcon />
+                        </TouchableOpacity>
+                                    <TouchableOpacity style={[styles.arrowBtn]} activeOpacity={0.7} onPress={() => {onPressPagination(progress.value + 1)}}>
+                                        <NextIcon />
+                        </TouchableOpacity>
                       </View>
-                    ))}
-                  </Swiper>
-                </View>
-
-                <View style={styles.indicatorImages}>
-                  {getDisplayProductImages().map((imagePath, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={[
-                        styles.imageItem,
-                        currentSwipIndex === index && styles.activeImageItem
-                      ]}
-                      onPress={() => handleIndicatorClick(index)}
-                    >
-                      <Image
-                        style={styles.indicatorImg}
-                        source={{ uri: imagePath }}
-                        resizeMode="cover"
-                      />
-                    </TouchableOpacity>
-                  ))}
-                </View>
-
-                <TouchableOpacity
-                  style={[styles.arrowButton, styles.prevBtn, !canPrev() && styles.disabledArrow]}
-                  onPress={() => setCurrentSwipIndex(prev => prev - 1)}
-                  disabled={!canPrev()}
-                >
-                  <Icon name="left" color="#FFFFFF" size={20} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[styles.arrowButton, styles.nextBtn, !canNext() && styles.disabledArrow]}
-                  onPress={() => setCurrentSwipIndex(prev => prev + 1)}
-                  disabled={!canNext()}
-                >
-                  <Icon name="right" color="#FFFFFF" size={20} />
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View style={styles.noData}>
-                <NoProduct />
-              </View>
-            )} */}
+                            </View> : 
+                                <View style={styles.noDataContainer}>
+                                    <Image 
+                                        width={pxToVw(140)}
+                                        source={{
+                                            uri: "https://starsnet-production.oss-cn-hongkong.aliyuncs.com/png/a19291d0-74b6-4e1e-84b0-5725409ff3ca.png"
+                                        }}
+                                    />
+                                    <Text style={styles.noDataText}>敬请期待</Text>
+                                </View>
+                            }
           </View> 
 
           <View style={styles.infoContainer}>
@@ -316,8 +295,8 @@ const init = useCallback(async (auctionLotId: string) => {
           />
 
           <LotDescription auction={getAuction} />
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
   );
 };
 
@@ -326,6 +305,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     paddingTop: 30,
+  },
+  carouselContainer: {
+    paddingTop: pxToVh(14),
   },
   auctionHeader: {
     padding: 30,
@@ -478,6 +460,33 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
+  nextPrevBtns: {
+        flexDirection:'row',
+        justifyContent:'center',
+        gap: pxToVw(12),
+        marginTop: pxToVh(40)
+    },
+    arrowBtn: {
+        width: pxToVw(34),
+        height: pxToVw(34),
+        borderRadius: '50%',
+        borderWidth: pxToVw(2),
+        borderColor: '#103947',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    arrowDisabled: {
+        borderColor: '#c7c9cd',
+        opacity: 0.5
+    },
+    noDataContainer: {
+        width: '100%',
+        alignItems: 'center'
+    },
+    noDataText: {
+        fontSize: pxToVw(18),
+        color: '#103947'
+    }
 });
 
 export default AuctionDetail;
