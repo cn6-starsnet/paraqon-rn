@@ -9,12 +9,13 @@ import Carousel, {
 import PrevIcon from '@svgs/common/arrow_left.svg'
 import NextIcon from '@svgs/common/arrow_right.svg'
 import SearchIcon from '@svgs/common/icon_search.svg'
+import RefreshIcon from '@svgs/tabs/icon_refresh.svg'
 
 const Home: FC = () => {
     const insets = useSafeAreaInsets();
     const { progress, carouselRef, featuredTabs, searchKeyword, setSearchKeyword, filterAuctions, currentFeaturedTab, onPressPagination, handleAuctionType, setCurrentFeaturedTab } = useHome();
     return (
-        <ScrollView>
+        <ScrollView style={styles.scrollContainer}>
             <View style={[styles.container, {
                 paddingTop: insets.top + 20
             }]}>
@@ -92,6 +93,29 @@ const Home: FC = () => {
                         <Text style={styles.noDataText}>敬请期待</Text>
                     </View>
                 }
+                <View style={styles.otherPartContainer}>
+                    <View style={styles.recommandAuctionContainer}>
+                        <View style={styles.recommandHeader}>
+                            <Text style={styles.headerTitle}>推荐拍品</Text>
+                            <View style={styles.headerRight}>
+                                <RefreshIcon width={20}/>
+                                <Text style={styles.rightDesc}>换一换</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.recommandAuctionContainer}>
+                        <View style={styles.recommandHeader}>
+                            <Text style={styles.headerTitle}>最新专题</Text>
+                            <View style={styles.headerRight}>
+                                <Text style={styles.rightDesc}>查看全部</Text>
+                                <NextIcon width={16}/>
+                            </View>
+                        </View>
+                        <View style={styles.latestFeatureList}>
+
+                        </View>
+                    </View>
+                </View>
             </View>
         </ScrollView>
     )
@@ -100,7 +124,11 @@ const Home: FC = () => {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        gap: pxToVh(16)
+        gap: pxToVh(16),
+    },
+    scrollContainer: {
+        flex: 1,
+        backgroundColor: '#ffffff',
     },
     searchContainer: {
         flexDirection: 'row',
@@ -166,6 +194,7 @@ const styles = StyleSheet.create({
     },
     carouselContainer: {
         paddingTop: pxToVh(14),
+        paddingBottom: pxToVh(20)
     },
     nextPrevBtns: {
         flexDirection:'row',
@@ -193,6 +222,37 @@ const styles = StyleSheet.create({
     noDataText: {
         fontSize: pxToVw(18),
         color: '#103947'
+    },
+    otherPartContainer: {
+        width: '100%',
+        backgroundColor: "#eeeeee90",
+        paddingHorizontal: pxToVw(20),
+        paddingVertical: pxToVh(12),
+        gap: pxToVh(20)
+    },
+    recommandAuctionContainer: {
+        width: '100%',
+    },
+    recommandHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    headerTitle: {
+        fontSize: pxToVw(16),
+        color: '#103947'
+    },
+    headerRight: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: pxToVw(5)
+    },
+    rightDesc: {
+        color: '#333333',
+        fontSize: pxToVw(12)
+    },
+    latestFeatureList: {
+        gap: pxToVh(16)
     }
 })
 
