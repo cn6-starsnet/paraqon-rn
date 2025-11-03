@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import auctionAPI from "@/api/auctions";
+import productAPI from "@/api/product";
 
 interface AuctionType {
   [key: string]: any;
@@ -25,6 +26,7 @@ interface AuctionsState {
   log_list: LotItem[];
   loading: boolean;
   error: string | null;
+  products: any[]
 }
 
 const initialState: AuctionsState = {
@@ -34,6 +36,7 @@ const initialState: AuctionsState = {
   log_list: [],
   loading: false,
   error: null,
+  products: []
 };
 
 // Async Thunks
@@ -65,9 +68,9 @@ export const fetchAuctionsGoods = createAsyncThunk(
   'auctions/fetchAuctionsGoods',
   async (params: { storeId: string; per_page?: number; page?: number; sort_by?: string; sort_order: string }, { rejectWithValue }) => {
     try {
-      const { 
-        storeId, 
-        per_page = 999, 
+      const {
+        storeId,
+        per_page = 999,
         page = 1,
       } = params;
       const response = await auctionAPI.getAuctionsGoods({
@@ -75,7 +78,7 @@ export const fetchAuctionsGoods = createAsyncThunk(
         per_page: per_page,
         page: page
       });
-      
+
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || '获取拍品数据失败');
@@ -99,6 +102,51 @@ export const getAllAuctionLotsAndNumber = createAsyncThunk(
     }
   }
 );
+
+export const filterProductsByCategories = createAsyncThunk(
+  'auctions/filterProductsByCategories',
+  async (params: {
+    next_page_url?: string;
+    store_id: string;
+    category_ids?: any[];
+    keyword?: string,
+    slug?: string,
+    sort_by: string | null,
+    sort_order: string | null,
+    per_page?: number,
+    page?: number,
+  }, { rejectWithValue }) => {
+    try {
+      const {
+        next_page_url = "",
+        store_id,
+        category_ids,
+        keyword,
+        slug = "recommended",
+        sort_by = null,
+        sort_order = null,
+        per_page = 999,
+        page = 1,
+      } = params;
+
+      const response = await productAPI.filterProductsByCategories({
+        next_page_url,
+        store_id,
+        category_ids,
+        keyword,
+        slug,
+        sort_by,
+        sort_order,
+        per_page,
+        page
+      });
+      console.log("filterProductsByCategories", response)
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || '获取拍品列表失败');
+    }
+  }
+)
 
 const auctionsSlice = createSlice({
   name: "auctions",
@@ -161,13 +209,17 @@ const auctionsSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      // filterProductsByCategories
+      .addCase(filterProductsByCategories.fulfilled, (state, action) => {
+        state.products = action.payload
+      })
       // getAllAuctionLotsAndNumber
       .addCase(getAllAuctionLotsAndNumber.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(getAllAuctionLotsAndNumber.fulfilled, (state, action) => {
-        console.log("正在设置action.payload",action.payload)
+        console.log("正在设置action.payload", action.payload)
         state.loading = false;
         state.log_list = action.payload;
       })
@@ -178,7 +230,7 @@ const auctionsSlice = createSlice({
   }
 });
 
-export const { 
+export const {
   setAuctionsType,
   setAuctionsDetails,
   setAuctionsGoods,

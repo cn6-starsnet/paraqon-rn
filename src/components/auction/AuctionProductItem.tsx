@@ -11,7 +11,7 @@ import { pxToVh, pxToVw } from '@/utils/pxToVx';
 import moment from 'moment';
 
 interface AuctionProductItemProps {
-  store_id: string | number;
+  store_id?: string | number;
   product: {
     _id?: string;
     id?: string;
@@ -122,7 +122,7 @@ const AuctionProductItem: React.FC<AuctionProductItemProps> = ({
     const end_time = product.store?.auction_type === 'LIVE'
       ? product.store?.end_datetime
       : product.end_datetime || product.store?.end_datetime;
-    
+
     if (end_time) return new Date(end_time) < new Date();
     return true;
   }, [product]);
@@ -137,7 +137,7 @@ const AuctionProductItem: React.FC<AuctionProductItemProps> = ({
 
   // 获取拍卖批次信息
   const auctionLot = useMemo(() => {
-    if (!product.auction_lot_id || !product.auction_lots?.length) 
+    if (!product.auction_lot_id || !product.auction_lots?.length)
       return null;
 
     return (
@@ -156,8 +156,8 @@ const AuctionProductItem: React.FC<AuctionProductItemProps> = ({
       product.sold_price ||
       (auctionLot?.commission_rate
         ? Math.floor(
-            (auctionLot.commission_rate / 100 + 1) * (product.current_bid || 0)
-          )
+          (auctionLot.commission_rate / 100 + 1) * (product.current_bid || 0)
+        )
         : product.current_bid
       )
     );
@@ -236,7 +236,7 @@ const AuctionProductItem: React.FC<AuctionProductItemProps> = ({
 
       <View style={styles.infoContainer}>
         <Text style={styles.lotNumber}>拍品 {product.lot_number}</Text>
-        
+
         {auctionLot?.brand && (
           <Text style={styles.brandText}>{auctionLot.brand.cn}</Text>
         )}
@@ -248,12 +248,12 @@ const AuctionProductItem: React.FC<AuctionProductItemProps> = ({
         {/* 估价 */}
         <Text style={styles.smallText}>
           估价: {formatCurrency(product.bid_incremental_settings?.estimate_price?.min || 0)}
-          {product.bid_incremental_settings?.estimate_price?.min !== 
-           product.bid_incremental_settings?.estimate_price?.max && (
-            <>
-              - {formatCurrency(product.bid_incremental_settings?.estimate_price?.max || 0)}
-            </>
-          )}
+          {product.bid_incremental_settings?.estimate_price?.min !==
+            product.bid_incremental_settings?.estimate_price?.max && (
+              <>
+                - {formatCurrency(product.bid_incremental_settings?.estimate_price?.max || 0)}
+              </>
+            )}
         </Text>
 
         {/* ONLINE 拍卖类型 */}
@@ -394,6 +394,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: pxToVh(10),
+    paddingHorizontal: pxToVw(12),
+    paddingVertical: pxToVh(20)
   },
   lotNumber: {
     fontSize: pxToVw(14),

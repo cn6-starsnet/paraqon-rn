@@ -1,19 +1,6 @@
 {
   // 保存时自动格式化
   "editor.formatOnSave": true,
-  // 默认格式化工具为 Prettier
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  // 保存时自动执行 ESLint 修复
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
-  // 让 ESLint 识别 RN 相关文件类型
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
   // 忽略不需要格式化的文件（可选）
   "prettier.ignorePath": ".prettierignore"
 }

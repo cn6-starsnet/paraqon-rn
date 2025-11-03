@@ -48,14 +48,15 @@ export const getAllAuctions = createAsyncThunk(
     per_page: number;
     page: number;
   } = {
-    next_page_url:"",
-    sort_by:"start_datetime",
-    sort_order:"ASC",
-    per_page:1,
-    page:1,
-  }) => {
-    const response = await auctionSitemapAPI.getAllAuctions();
-    return response.data;
+      next_page_url: "",
+      sort_by: "start_datetime",
+      sort_order: "ASC",
+      per_page: 1,
+      page: 1,
+    }) => {
+    const response = await auctionSitemapAPI.getAllAuctions(params);
+    console.log("获取到的getAllAuctions", response)
+    return response;
   }
 );
 
@@ -63,7 +64,7 @@ export const getAuctionDetails = createAsyncThunk(
   'auction/getAuctionDetails',
   async (auction_id: string) => {
     const response = await auctionAPI.getAuctionDetails({ auction_id });
-    console.log("getAuctionDetails",response)
+    console.log("getAuctionDetails", response)
     return response;
   }
 );
@@ -72,12 +73,12 @@ const auctionSlice = createSlice({
   name: "auction",
   initialState,
   reducers: {
-    updateAuctionRegistration: (state, action: PayloadAction<{ 
-      auction_id: string; 
-      auction_registration_request: any 
+    updateAuctionRegistration: (state, action: PayloadAction<{
+      auction_id: string;
+      auction_registration_request: any
     }>) => {
       const { auction_id, auction_registration_request } = action.payload;
-      
+
       for (const auctionData of state.auctions) {
         const itemIndex = auctionData.data.findIndex((item) => item._id === auction_id);
         if (itemIndex !== -1) {
@@ -88,7 +89,7 @@ const auctionSlice = createSlice({
           break;
         }
       }
-      
+
       if (state.auction && state.auction._id === auction_id) {
         state.auction.auction_registration_request = auction_registration_request;
         if (auction_registration_request.reply_status === "APPROVED") {
@@ -99,16 +100,16 @@ const auctionSlice = createSlice({
     setPaddles: (state, action: PayloadAction<any[]>) => {
       state.paddles = action.payload;
     },
-    socketUpdateAuction: (state, action: PayloadAction<{ 
-      id: string; 
-      update: Partial<Auction> 
+    socketUpdateAuction: (state, action: PayloadAction<{
+      id: string;
+      update: Partial<Auction>
     }>) => {
       const { id, update } = action.payload;
-      
+
       if (state.auction && state.auction._id === id) {
         state.auction = { ...state.auction, ...update };
       }
-      
+
       for (const auctionData of state.auctions) {
         const item = auctionData.data.find((item) => item._id === id);
         if (item) {
@@ -128,9 +129,9 @@ const auctionSlice = createSlice({
     builder
       .addCase(getAllAuctions.fulfilled, (state, action) => {
         if (action.payload.current_page === 1) {
-          state.auctions = [action.payload];
+          state.auctions = action.payload.data;
         } else {
-          state.auctions.push(action.payload);
+          state.auctions.push(action.payload.data);
         }
       })
       .addCase(getAuctionDetails.fulfilled, (state, action) => {
@@ -139,9 +140,9 @@ const auctionSlice = createSlice({
   }
 });
 
-export const { 
-  updateAuctionRegistration, 
-  setPaddles, 
+export const {
+  updateAuctionRegistration,
+  setPaddles,
   socketUpdateAuction,
   clearAuction,
   clearAuctions

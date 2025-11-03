@@ -1,4 +1,3 @@
-// store/slices/postsSlice.ts
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import postsAPI from "@/api/posts";
 
@@ -71,10 +70,10 @@ export const filterPostsByCategories = createAsyncThunk(
   }, { rejectWithValue }) => {
     try {
       const response = await postsAPI.filterPostsByCategories(params);
-      console.log("|response.data",response.data)
-      return response.data;
+      console.log("|response.data", response)
+      return response;
     } catch (error: any) {
-      console.log("获取的论设数据出错",error)
+      console.log("获取的论设数据出错", error)
       return rejectWithValue(error.response?.data?.message || '筛选文章失败');
     }
   }
@@ -113,7 +112,7 @@ const postsSlice = createSlice({
     },
     updateLike: (state, action: PayloadAction<{ post: Post; currentUserId: string }>) => {
       const { post, currentUserId } = action.payload;
-      
+
       if (!state.liked_posts || !state.post) return;
 
       const likedPosts = state.liked_posts.data;
@@ -181,9 +180,9 @@ const postsSlice = createSlice({
         state.loading = false;
         console.log("crateAsyncChunk", action.payload)
         if (action.payload.current_page === 1) {
-          state.posts = [action.payload];
+          state.posts = [...action.payload.data];
         } else {
-          state.posts.push(action.payload);
+          state.posts.push(...action.payload.data);
         }
       })
       .addCase(filterPostsByCategories.rejected, (state, action) => {
@@ -193,7 +192,7 @@ const postsSlice = createSlice({
   }
 });
 
-export const { 
+export const {
   setCategories,
   pushCategories,
   setLikedPosts,
