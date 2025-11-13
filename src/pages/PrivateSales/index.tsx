@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
   View,
   Text,
@@ -10,26 +10,26 @@ import {
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 const { width: screenWidth } = Dimensions.get('window');
-const PrivateSales = () => {
+const PrivateSales: FC = () => {
   const contents = {
-                header: {
-                    banner_image: "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/f299e7d7-324a-4693-9c58-952ffd727247.webp",
-                    title: "PARAQON的私人洽购",
-                    description: `如果您想购买最华丽的珠宝艺术品，或者为您独特的收藏寻找最稀有的宝石，或者为您心爱的珠宝寻找合适的买家，我们经验丰富的专家将为您提供真正的个性化服务为您的旅程提供建议和帮助。我们将全球市场专业知识与广泛的个人关系相结合，以实现最佳结果。私下出售时，交易价格基于双方协议，并完全保密。`
-                },
-                items: [
-                    {
-                        cover_image:
-                        "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/c0cdcec9-3ad4-40f8-b18b-c757dcb0ce41.webp",
-                        title: "“红凤凰”",
-                        description: "缅甸红宝石和钻石项链",
-                        images: [
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/f3156e93-20cd-4535-9a04-db17a065700b.webp",
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/1cac0220-bcc3-4d73-adbd-cdc5a7f73d60.webp",
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/6d6c6746-280b-4926-ab59-1122b41fbac9.webp",
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/f48dc0c7-ab3c-4e4b-a4da-b987516a2801.webp",
-                        ],
-                        html: `<h5 class="font-weight-bold">'红凤凰'</h5>
+    header: {
+      banner_image: "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/f299e7d7-324a-4693-9c58-952ffd727247.webp",
+      title: "PARAQON的私人洽购",
+      description: `如果您想购买最华丽的珠宝艺术品，或者为您独特的收藏寻找最稀有的宝石，或者为您心爱的珠宝寻找合适的买家，我们经验丰富的专家将为您提供真正的个性化服务为您的旅程提供建议和帮助。我们将全球市场专业知识与广泛的个人关系相结合，以实现最佳结果。私下出售时，交易价格基于双方协议，并完全保密。`
+    },
+    items: [
+      {
+        cover_image:
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/c0cdcec9-3ad4-40f8-b18b-c757dcb0ce41.webp",
+        title: "“红凤凰”",
+        description: "缅甸红宝石和钻石项链",
+        images: [
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/f3156e93-20cd-4535-9a04-db17a065700b.webp",
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/1cac0220-bcc3-4d73-adbd-cdc5a7f73d60.webp",
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/6d6c6746-280b-4926-ab59-1122b41fbac9.webp",
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/f48dc0c7-ab3c-4e4b-a4da-b987516a2801.webp",
+        ],
+        html: `<h5 class="font-weight-bold">'红凤凰'</h5>
                             <h6>缅甸红宝石与钻石项链</h6>
                             <text>
                                 这条项链的中心舞台上，六十颗非凡的缅甸红宝石闪耀着活力四射的红色和钻石的璀璨火光，结合大胆的珠宝设计，真的是一种壮观的视觉盛宴。
@@ -50,21 +50,21 @@ const PrivateSales = () => {
                                 'Faidee'这个名字追溯到超过100年的动态宝石交易历史。凭借在缅甸宝石领域的专业知识，它垂直整合了从红宝石开采、切割到珠宝制造的每一个环节，确保在行业中达到最高标准。
                             </text>
                         `,
-                        path: "/contact-us",
-                        button: "提出查询",
-                    },
-                    {
-                        cover_image:
-                        "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/87917117-8694-4a44-a22e-87e36eb055fe.webp",
-                        title: "无瑕且稀有的钻石",
-                        description: null,
-                        images: [
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/01ecc98e-0f2a-436c-afc9-ba8f0eb5d9ea.webp",
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/jpg/69cce9ca-c907-45ed-9dd1-d7251778772c.jpg",
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/0093959b-8df6-4c9f-a5b6-dc8e5883855c.webp",
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/90e793c4-7a2a-45a5-b0d7-3c9b822446bc.webp",
-                        ],
-                        html: `<h5 class="font-weight-bold">无瑕且稀有的钻石</h5>
+        path: "/contact-us",
+        button: "提出查询",
+      },
+      {
+        cover_image:
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/87917117-8694-4a44-a22e-87e36eb055fe.webp",
+        title: "无瑕且稀有的钻石",
+        description: null,
+        images: [
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/01ecc98e-0f2a-436c-afc9-ba8f0eb5d9ea.webp",
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/jpg/69cce9ca-c907-45ed-9dd1-d7251778772c.jpg",
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/0093959b-8df6-4c9f-a5b6-dc8e5883855c.webp",
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/90e793c4-7a2a-45a5-b0d7-3c9b822446bc.webp",
+        ],
+        html: `<h5 class="font-weight-bold">无瑕且稀有的钻石</h5>
                             <text>
                             在数十亿年的时间里，地球地幔深处数百公里的极端高温和高压下，大自然孕育出了其最珍贵和美丽的创造之一——钻石。人类自公元前四世纪以来就开始欣赏其辉煌与价值。如今，平均每个钻石矿的产量为1部分钻石对100万部分母岩，而其中仅有20%适合用于珠宝，因此高品质的大天然钻石市场依然强劲。
                             </text>
@@ -78,21 +78,21 @@ const PrivateSales = () => {
                             我们的公司名称源自英文单词'Paragon'，意为'超过100克拉的完美钻石'，我们努力成为您获取完美钻石的最佳合作伙伴。
                             </text>
                         `,
-                        path: "/contact-us",
-                        button: "提出查询",
-                    },
-                    {
-                        cover_image:
-                        "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/a39bc69e-c994-43b5-94e0-b83866c21e80.webp",
-                        title:  "“帝王绿”",
-                        description: "最好的翡翠",
-                        images: [
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/fc300c51-6d05-4100-aa89-6a156b9210a0.webp",
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/7cc89f37-cdb0-4020-84b6-609eddcee289.webp",
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/74b818c1-cc50-468f-889f-bb458101bf08.webp",
-                            "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/672a20d6-1fc4-4f8f-85fa-056736a96d91.webp",
-                        ],
-                        html: `<h5 class="font-weight-bold">帝王绿'</h5>
+        path: "/contact-us",
+        button: "提出查询",
+      },
+      {
+        cover_image:
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/a39bc69e-c994-43b5-94e0-b83866c21e80.webp",
+        title: "“帝王绿”",
+        description: "最好的翡翠",
+        images: [
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/fc300c51-6d05-4100-aa89-6a156b9210a0.webp",
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/7cc89f37-cdb0-4020-84b6-609eddcee289.webp",
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/74b818c1-cc50-468f-889f-bb458101bf08.webp",
+          "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/672a20d6-1fc4-4f8f-85fa-056736a96d91.webp",
+        ],
+        html: `<h5 class="font-weight-bold">帝王绿'</h5>
                             <h6>最精美的翡翠</h6>
                             <text>
                                 翡翠，或用中文称为'玉'，在迷人的宝石世界中一直占据着特殊的地位，其最著名的故事与中国文化和历史深刻相关。这种精美的石头被认为具有许多美德，如治愈能力、好运、繁荣、长寿、幸福和爱情。因此，翡翠在皇室中备受青睐，其价值一直高于其他任何宝石。
@@ -110,11 +110,11 @@ const PrivateSales = () => {
                             在PARAQON位于香港的办公室，我们利用与中国翡翠市场资源的紧密联系，努力为您带来独特美丽和极高稀有性的翡翠珠宝，将其颜色、质地、设计和工艺的独特特征结合在一起。
                             </text>
                         `,
-                        path: "/contact-us",
-                        button: "提出查询"
-                    },
-                ],
-            }
+        path: "/contact-us",
+        button: "提出查询"
+      },
+    ],
+  }
 
   const [expandedIndex, setExpandedIndex] = useState(null);
 
@@ -161,7 +161,7 @@ const PrivateSales = () => {
                     <RenderHtml
                       contentWidth={screenWidth - 60}
                       source={{ html: item.html }}
-                      // tagsStyles={htmlStyles}
+                    // tagsStyles={htmlStyles}
                     />
                     <View style={styles.imageList}>
                       {item.images.map((imageUrl: string, imgIndex: number) => (
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   },
   itemCoverImage: {
     width: '100%',
-    height: 266, 
+    height: 266,
     borderRadius: 8,
   },
   itemMainContent: {

@@ -1,19 +1,21 @@
-import { screenHeight } from "@/utils/pxToVx";
+import { pxToVh, screenHeight } from "@/utils/pxToVx";
 import { FC } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import WebView from "react-native-webview";
+import useMine from "./useMine";
 
-const Mine:FC = () => {
+const Mine: FC = () => {
     const insets = useSafeAreaInsets();
+    const { handleGoLogin } = useMine();
 
     const webviewUrl = "https://www.paraqon.com/authentication/login/email"
 
     return (
-        <View style={[styles.container,{
+        <View style={[styles.container, {
             paddingTop: insets.top
         }]}>
-            <WebView
+            {/* <WebView
                 source={{ uri: webviewUrl }}
                 // 显示加载指示器
                 startInLoadingView={true}
@@ -25,7 +27,10 @@ const Mine:FC = () => {
                 javaScriptEnabled={true}
                 // 允许 DOM 存储
                 domStorageEnabled={true}
-            />
+            /> */}
+            <View style={styles.mainContainer}>
+                <Button title="登录" onPress={handleGoLogin}></Button>
+            </View>
         </View>
     )
 }
@@ -33,6 +38,9 @@ const Mine:FC = () => {
 const styles = StyleSheet.create({
     container: {
         height: screenHeight
+    },
+    mainContainer: {
+        paddingVertical: pxToVh(24)
     }
 })
 

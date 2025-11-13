@@ -5,6 +5,8 @@ export type TabRouteParams = {
 export type RootStackParamList = {
     Tabs: undefined,
     Welcome: undefined,
+    Login: undefined,
+    Register: undefined,
     Setting: undefined,
     WrokChance: undefined,
     Information: undefined,
@@ -12,9 +14,5 @@ export type RootStackParamList = {
     ExpertServices: undefined,
     EditorialDetail: undefined,
     Auctions: undefined,
-    AuctionDetail: undefined
-}
-
-export const Test = {
-    Tabs: undefined,
+    AuctionDetail: { id: string }
 }

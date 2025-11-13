@@ -1,5 +1,5 @@
 import Tabs from '@/pages/Tabs';
-import {RootStackParamList} from '../../types/navigation'
+import { RootStackParamList } from '../../types/navigation'
 import Welcome from "@/pages/Welcome";
 import { NavigationContainer, NavigationState } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -11,6 +11,8 @@ import Information from '@/pages/Tabs/Information';
 import WrokChance from '@/pages/WrokChance';
 import Auctions from '@/pages/Auctions';
 import AuctionDetail from '@/pages/AuctionDetail';
+import Login from '@/pages/Login'
+import Register from '@/pages/Register'
 
 export const defaultRouteName: keyof RootStackParamList = "Welcome";
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -55,6 +57,14 @@ const StackList: StackScreenProps[] = [
         component: AuctionDetail
     },
     {
+        name: "Login",
+        component: Login
+    },
+    {
+        name: "Register",
+        component: Register
+    },
+    {
         name: "Tabs",
         component: Tabs
     }
@@ -81,7 +91,7 @@ const NavigationConfig: FC<NavigationConfigProps> = ({ onStateChange }) => {
                 }}
             >
                 {StackList.map((item) => (
-                    <Stack.Screen {...item} key={item.name}/>
+                    <Stack.Screen {...item} key={item.name} />
                 ))}
             </Stack.Navigator>
         </NavigationContainer>

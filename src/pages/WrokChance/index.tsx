@@ -6,16 +6,17 @@ import {
   StyleSheet,
 } from 'react-native';
 import { pxToVh, pxToVw } from '@/utils/pxToVx';
+import { FC } from 'react';
 
-const WrokChance = () => {
-    const content = {
-            banner_image: "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/e761fac2-cf5b-4d1f-b100-dacc1f804b63.webp",
-            title: "加入 PARAQON 大家庭：热情与目标的交汇",
-            description: "欢迎来到 PARAQON 的职业发展页面，这里汇聚了创造力、热情和创新，共同塑造高级珠宝的未来。如果您渴望加入一支充满活力、富有远见的团队，我们诚挚邀请您探索公司内部令人兴奋的职涯发展机会。",
-            main_image: "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/4b5e31be-109e-4d2a-9394-bd14f55be131.webp",
-            bottom_title: "我们的理念：培养人才，成就卓越",
-            bottom_description: "在 PARAQON，我们相信我们的成功深深植根于团队的才华、奉献精神和创造力。我们创造一个协作包容的环境，鼓励员工在个人和职业发展方面蓬勃发展。我们正在扩大我们的大家庭，寻求与我们一样追求卓越、对打造恒久之美充满热情的人才。"
-        }
+const WrokChance: FC = () => {
+  const content = {
+    banner_image: "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/e761fac2-cf5b-4d1f-b100-dacc1f804b63.webp",
+    title: "加入 PARAQON 大家庭：热情与目标的交汇",
+    description: "欢迎来到 PARAQON 的职业发展页面，这里汇聚了创造力、热情和创新，共同塑造高级珠宝的未来。如果您渴望加入一支充满活力、富有远见的团队，我们诚挚邀请您探索公司内部令人兴奋的职涯发展机会。",
+    main_image: "https://starsnet-development.oss-cn-hongkong.aliyuncs.com/webp/4b5e31be-109e-4d2a-9394-bd14f55be131.webp",
+    bottom_title: "我们的理念：培养人才，成就卓越",
+    bottom_description: "在 PARAQON，我们相信我们的成功深深植根于团队的才华、奉献精神和创造力。我们创造一个协作包容的环境，鼓励员工在个人和职业发展方面蓬勃发展。我们正在扩大我们的大家庭，寻求与我们一样追求卓越、对打造恒久之美充满热情的人才。"
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     gap: pxToVh(16),
   },
   bottomContentTitle: {
-    fontSize: pxToVw(18), 
+    fontSize: pxToVw(18),
     lineHeight: pxToVw(27),
     color: '#103947',
   },

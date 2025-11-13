@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import { useRoute } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { getContentBySlug } from '@/store/slices/staticSlice';
 
-const Information = () => {
+const Information: FC = () => {
   const route = useRoute();
   const informationType = route.params?.type || '';
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -94,7 +94,7 @@ const Information = () => {
 
   useEffect(() => {
     if (!notFetchData.includes(informationType)) {
-        dispatch(getContentBySlug(informationType))
+      dispatch(getContentBySlug(informationType))
     }
   }, [informationType]);
 
