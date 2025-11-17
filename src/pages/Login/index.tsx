@@ -14,7 +14,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 const Login: FC = () => {
 
-  const { onSubmitLogin, handleRegister } = useLogin()
+  const { onSubmitLogin, handleRegister, navigatorForgetPwd } = useLogin()
 
   const {
     control,
@@ -98,7 +98,7 @@ const Login: FC = () => {
           />
         </View>
         <View>
-          <Text style={styles.forgetPasswordText}>Forgot Password?</Text>
+          <Text style={styles.forgetPasswordText} onPress={navigatorForgetPwd}>Forgot Password?</Text>
           <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmitLogin)}>
             <Text style={styles.buttonText}>LOGIN</Text>
           </TouchableOpacity>

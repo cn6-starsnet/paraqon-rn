@@ -82,7 +82,6 @@ const useHome = () => {
             .slice(0, 6);
     }, []);
 
-    // 获取拍卖产品
     const getAuctionProducts = useCallback(async (auction: any) => {
         try {
             console.log("正在获取推荐产品数据")
@@ -98,25 +97,22 @@ const useHome = () => {
         }
     }, [dispatch]);
 
-    // 导航到拍卖详情
     const handleNavigatorDetail = useCallback((auctionId: string) => {
         navigation.dispatch(StackActions.push("AuctionDetail", {
             auction_id: auctionId
         }));
     }, [navigation]);
 
-    // 导航到拍卖页面
     const handleAuctionType = useCallback((auctionId: string) => {
         navigation.dispatch(StackActions.push("Auctions", {
             storeId: auctionId
         }));
     }, [navigation]);
 
-    // 处理专题点击
     const handlePostClick = useCallback((id: string) => {
-        navigation.dispatch(StackActions.push("EditorialDetail", {
-            id: id
-        }));
+        // navigation.dispatch(StackActions.push("EditorialDetail", {
+        //     postId: id
+        // }));
     }, [navigation]);
 
     const viewMorePost = useCallback(() => {
@@ -164,6 +160,7 @@ const useHome = () => {
     }, [getPosts]);
 
     const topTwoPosts = useMemo(() => {
+        console.log("(getPosts || []).slice(0, 2)", (getPosts || []).slice(0, 2))
         return (getPosts || []).slice(0, 2);
     }, [getPosts]);
 
@@ -215,7 +212,7 @@ const useHome = () => {
     }, [getAuctions, filterUpcomingAuctions, filterPastAuctions, getAuctionProducts]);
 
     const handleViewAllPost = useCallback(() => {
-        navigation.dispatch(StackActions.push("Editorial"))
+        // navigation.dispatch(StackActions.push("Editorial"))
     }, [])
 
     const getRandomAuctionProducts = useCallback(async () => {

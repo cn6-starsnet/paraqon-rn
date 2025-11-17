@@ -1,11 +1,6 @@
 import configurationAPI from "@/api/configuration";
+import { ConfigData, ConfigInfo } from "@/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface ConfigData {
-  id: string;
-  name: string;
-  settings: any;
-}
 
 interface ConfigurationState {
   config: ConfigData | null;
@@ -15,28 +10,28 @@ const initalState: ConfigurationState = {
 }
 
 export const fetchLatest = createAsyncThunk(
-    'configuration/fetchLatest',
-    async () => {
-        const response = await configurationAPI.getLatestAPI();
-        return response;
-    }
+  'configuration/fetchLatest',
+  async () => {
+    const response = await configurationAPI.getLatestAPI();
+    return response;
+  }
 )
 
 const configurationSlice = createSlice({
-    name:"configuration",
-    initialState: initalState,
-    reducers: {
-        clearConfiguration: (state) => {
-            state.config = null;
-        },
-        setConfig: (state, action: PayloadAction<ConfigData>) => {
-            state.config = action.payload;
-        },
-        getLatest: (state,action) => {
-            state.config = action.payload
-        }
+  name: "configuration",
+  initialState: initalState,
+  reducers: {
+    clearConfiguration: (state) => {
+      state.config = null;
     },
-    extraReducers: (builder) => {
+    setConfig: (state, action: PayloadAction<ConfigData>) => {
+      state.config = action.payload;
+    },
+    getLatest: (state, action) => {
+      state.config = action.payload
+    }
+  },
+  extraReducers: (builder) => {
     builder
       // fetchConfiguration
       .addCase(fetchLatest.fulfilled, (state, action) => {

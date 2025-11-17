@@ -1,4 +1,5 @@
 import FileUploadInput from "@/components/FileUploadInput";
+import { ConfigData } from "@/types";
 import { pxToVh, pxToVw } from "@/utils/pxToVx";
 import { FC } from "react";
 import { Controller, useForm, useFormContext } from "react-hook-form";
@@ -6,10 +7,12 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-nativ
 import RNPickerSelect from 'react-native-picker-select';
 
 interface CompanyFormProps {
+    config: ConfigData,
     onSubmit: () => void
 }
 
 const CompanyForm: FC<CompanyFormProps> = ({
+    config,
     onSubmit
 }) => {
     const { control, watch, formState: { errors } } = useFormContext();
@@ -149,43 +152,62 @@ const CompanyForm: FC<CompanyFormProps> = ({
             </View>
             <View style={styles.fieldItem}>
                 <Text style={styles.fieldLabel}>Phone *</Text>
-                <Controller
-                    control={control}
-                    name="Phone"
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <>
-                            <View style={styles.phoneFormItem}>
-                                <RNPickerSelect
-                                    placeholder={{
-                                        label: "Please Select",
-                                        value: null
-                                    }}
-                                    onValueChange={onChange}
-                                    value={value}
-                                    style={pickerSelectStyles}
-                                    items={[
-                                        { label: 'Social Media', value: 'Social Media' },
-                                        { label: 'Referral', value: 'Referral' },
-                                        { label: 'Google', value: 'Google' },
-                                        { label: 'Other', value: 'Other' },
-                                    ]}
-                                />
-                                <TextInput
-                                    style={[styles.inputItem, styles.phoneInput, errors.confirmEmail && styles.inputError]}
-                                    placeholder="确认邮箱"
-                                    onBlur={onBlur}
-                                    onChangeText={onChange}
-                                    value={value}
-                                    keyboardType="email-address"
-                                    autoCapitalize="none"
-                                />
-                            </View>
-                            {errors.confirmEmail && typeof errors.confirmEmail.message === 'string' && (
-                                <Text style={styles.errorText}>{errors.confirmEmail.message}</Text>
+                <View style={styles.phoneFormContainer}>
+                    <View style={styles.phoneFormContainerItem}>
+                        <Controller
+                            control={control}
+                            name="areaCodes"
+                            defaultValue={"852"}
+                            rules={{
+                                required: '地区选择不能为空',
+                            }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <>
+                                    <View>
+                                        <RNPickerSelect
+                                            onValueChange={onChange}
+                                            value={value}
+                                            style={pickerSelectStyles}
+                                            items={config['area-codes'].list.map(item => ({
+                                                label: item.text['cn'],
+                                                value: item.value
+                                            }))}
+                                        />
+
+                                    </View>
+                                    {errors.areaCodes && typeof errors.areaCodes.message === 'string' && (
+                                        <Text style={styles.errorText}>{errors.areaCodes.message}</Text>
+                                    )}
+                                </>
                             )}
-                        </>
-                    )}
-                />
+                        />
+                    </View>
+                    <View style={styles.phoneFormContainerItem}>
+                        <Controller
+                            control={control}
+                            name="Phone"
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <>
+                                    <View>
+                                        <TextInput
+                                            style={[styles.inputItem, errors.confirmEmail && styles.inputError]}
+                                            placeholder="确认电话"
+                                            onBlur={onBlur}
+                                            onChangeText={onChange}
+                                            value={value}
+                                            keyboardType="email-address"
+                                            autoCapitalize="none"
+                                        />
+                                    </View>
+                                    {errors.confirmEmail && typeof errors.confirmEmail.message === 'string' && (
+                                        <Text style={styles.errorText}>{errors.confirmEmail.message}</Text>
+                                    )}
+                                </>
+                            )}
+                        />
+                    </View>
+
+                </View>
             </View>
             <View style={styles.fieldItem}>
                 <Text style={styles.nameTipText}>Fill in your first and last names as they appear on your government-issued ID.</Text>
@@ -340,6 +362,9 @@ const CompanyForm: FC<CompanyFormProps> = ({
                 />
             </View>
             <View>
+                <Text style={styles.registerTipText}>
+                    Must be 8 or more characters with a mix of letters and numbers
+                </Text>
                 <TouchableOpacity style={styles.button} onPress={onSubmit}>
                     <Text style={styles.buttonText}>Register</Text>
                 </TouchableOpacity>
@@ -367,6 +392,7 @@ const pickerSelectStyles = StyleSheet.create({
         height: pxToVh(110),
         color: '#103947',
         minWidth: pxToVw(150),
+        flex: 1,
         borderWidth: 1,
         borderColor: '#f5f5f5',
     },
@@ -413,11 +439,17 @@ const styles = StyleSheet.create({
         fontSize: 12,
         marginTop: 4,
     },
-    phoneFormItem: {
-        flexDirection: 'row',
-        gap: pxToVw(12),
+    registerTipText: {
+        color: '#17a2b8',
+        textAlign: 'center',
+        paddingBottom: pxToVh(32),
+        lineHeight: 21
     },
-    phoneInput: {
+    phoneFormContainer: {
+        flexDirection: 'row',
+        gap: pxToVw(12)
+    },
+    phoneFormContainerItem: {
         flex: 1
     }
 });

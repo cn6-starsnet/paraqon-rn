@@ -13,8 +13,7 @@ import CompanyForm from './components/CompanyForm';
 import { RadioGroup } from 'react-native-radio-buttons-group';
 
 const Register: FC = () => {
-
-  const { radioButtons, registerType, handleGoLogin, onSubmitCompany, setRegisterType, onSubmitIndividual } = useRegister()
+  const { getConfig, radioButtons, registerType, handleGoLogin, onSubmitCompany, setRegisterType, onSubmitIndividual } = useRegister()
 
   const individualForm = useForm({
     defaultValues: {
@@ -65,11 +64,11 @@ const Register: FC = () => {
         {
           registerType === 'individual' ?
             <FormProvider {...individualForm}>
-              <IndividualForm onSubmit={individualForm.handleSubmit(onSubmitIndividual)} />
+              <IndividualForm config={getConfig} onSubmit={individualForm.handleSubmit(onSubmitIndividual)} />
             </FormProvider>
             :
             <FormProvider {...companyForm}>
-              <CompanyForm onSubmit={companyForm.handleSubmit(onSubmitCompany)} />
+              <CompanyForm config={getConfig} onSubmit={companyForm.handleSubmit(onSubmitCompany)} />
             </FormProvider>
         }
         <Text style={styles.haveAccountText}>

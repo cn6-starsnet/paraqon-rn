@@ -4,8 +4,8 @@ const useMine = () => {
     const navigation = useNavigation();
 
     const handleGoLogin = () => {
-        navigation.dispatch(StackActions.push(
-            'Login'));
+        // navigation.dispatch(StackActions.push(
+        //     'Login'));
     }
 
     return {

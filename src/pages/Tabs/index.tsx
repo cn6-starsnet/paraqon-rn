@@ -14,12 +14,12 @@ import Services from "./Services";
 
 const Tab = createBottomTabNavigator();
 const Tabs: FC = () => {
-    const route = useRoute<RouteProp<{params: TabRouteParams}>>()
+    const route = useRoute<RouteProp<{ params: TabRouteParams }>>()
     const initialRouteName = route.params?.initRouteName
         ? route.params.initRouteName
         : 'Home';
-    
-    const HomeTabBarIcon = useCallback((props: {focused: boolean}) => {
+
+    const HomeTabBarIcon = useCallback((props: { focused: boolean }) => {
         return (
             <View style={{ alignItems: 'center' }}>
                 <View style={[
@@ -28,7 +28,7 @@ const Tabs: FC = () => {
                         backgroundColor: props.focused ? '#000000' : 'transparent'
                     }
                 ]} />
-                {props.focused ? <IconHomeActive width={20}/> : <IconHome width={20}/>}
+                {props.focused ? <IconHomeActive width={20} /> : <IconHome width={20} />}
             </View>
         )
     }, [])
@@ -41,9 +41,9 @@ const Tabs: FC = () => {
                 tabBarStyle: styles.tabBarStyle,
                 tabBarActiveTintColor: "#435950",
                 tabBarInactiveTintColor: "#7A7E83",
-                tabBarLabel:({ focused, color, children }) => (
+                tabBarLabel: ({ focused, color, children }) => (
                     <Text style={{
-                        fontSize:pxToVw(12),
+                        fontSize: pxToVw(12),
                         lineHeight: pxToVw(14),
                         fontWeight: focused ? '600' : '400',
                         color: color
@@ -53,7 +53,7 @@ const Tabs: FC = () => {
                 )
             })}
         >
-            <Tab.Screen 
+            <Tab.Screen
                 name="Home"
                 component={Home}
                 options={{
@@ -62,7 +62,7 @@ const Tabs: FC = () => {
                     tabBarIcon: HomeTabBarIcon
                 }}
             />
-            <Tab.Screen 
+            {/* <Tab.Screen 
                 name="Editorial"
                 component={Editorial}
                 options={{
@@ -79,8 +79,8 @@ const Tabs: FC = () => {
                     headerShown: false,
                     tabBarIcon: HomeTabBarIcon
                 }}
-            />
-            <Tab.Screen 
+            /> */}
+            {/* <Tab.Screen
                 name="Careers"
                 component={Careers}
                 options={{
@@ -88,8 +88,8 @@ const Tabs: FC = () => {
                     headerShown: false,
                     tabBarIcon: HomeTabBarIcon
                 }}
-            />
-            <Tab.Screen 
+            /> */}
+            <Tab.Screen
                 name="Mine"
                 component={Mine}
                 options={{

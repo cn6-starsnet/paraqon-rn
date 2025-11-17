@@ -14,5 +14,6 @@ export type RootStackParamList = {
     ExpertServices: undefined,
     EditorialDetail: undefined,
     Auctions: undefined,
+    ForgetPassword: undefined,
     AuctionDetail: { id: string }
 }

@@ -15,9 +15,14 @@ const useLogin = () => {
         navigation.dispatch(StackActions.push("Register"))
     }
 
+    const navigatorForgetPwd = () => {
+        navigation.dispatch(StackActions.push("ForgetPassword"))
+    }
+
     return {
         handleRegister,
         onSubmitLogin,
+        navigatorForgetPwd
     }
 }
 

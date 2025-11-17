@@ -13,6 +13,7 @@ import Auctions from '@/pages/Auctions';
 import AuctionDetail from '@/pages/AuctionDetail';
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
+import ForgetPassword from '@/pages/ForgetPassword';
 
 export const defaultRouteName: keyof RootStackParamList = "Welcome";
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -65,6 +66,10 @@ const StackList: StackScreenProps[] = [
         component: Register
     },
     {
+        name: "ForgetPassword",
+        component: ForgetPassword
+    },
+    {
         name: "Tabs",
         component: Tabs
     }
@@ -85,6 +90,7 @@ const NavigationConfig: FC<NavigationConfigProps> = ({ onStateChange }) => {
             }}
         >
             <Stack.Navigator
+                id={undefined}
                 initialRouteName={defaultRouteName}
                 screenOptions={{
                     headerShown: false

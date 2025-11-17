@@ -1,11 +1,16 @@
+import { useAppSelector } from "@/store/hooks";
 import { CompanyFormData, IndividualFormData, RegisterType } from "@/types/register";
 import { StackActions, useNavigation } from "@react-navigation/native";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RadioButtonProps } from "react-native-radio-buttons-group";
+import { useSelector } from "react-redux";
+import { selectTimeInitialized } from "@/store/selectors/timeSelectors";
+import { RootState } from "@/store";
 
 const useRegister = () => {
     const [registerType, setRegisterType] = useState<string | undefined>("individual")
     const navigation = useNavigation();
+    const getConfig = useAppSelector((state: RootState) => state.configuration.config)
 
     const radioButtons: RadioButtonProps[] = useMemo(() => ([
         {
@@ -35,7 +40,12 @@ const useRegister = () => {
         navigation.dispatch(StackActions.push('Login'))
     }
 
+    useEffect(() => {
+        console.log("config 配置是", getConfig)
+    }, [getConfig])
+
     return {
+        getConfig,
         registerType,
         radioButtons,
 
